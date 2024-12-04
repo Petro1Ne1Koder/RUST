@@ -1,0 +1,11 @@
+C:\RUST\real_time_chat\target\debug\deps\liblitemap-bd881d20ce69f77c.rmeta: C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src/lib.rs C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src\map.rs C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src\store\mod.rs C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src\store\slice_impl.rs C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src\store\vec_impl.rs
+
+C:\RUST\real_time_chat\target\debug\deps\liblitemap-bd881d20ce69f77c.rlib: C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src/lib.rs C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src\map.rs C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src\store\mod.rs C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src\store\slice_impl.rs C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src\store\vec_impl.rs
+
+C:\RUST\real_time_chat\target\debug\deps\litemap-bd881d20ce69f77c.d: C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src/lib.rs C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src\map.rs C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src\store\mod.rs C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src\store\slice_impl.rs C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src\store\vec_impl.rs
+
+C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src/lib.rs:
+C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src\map.rs:
+C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src\store\mod.rs:
+C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src\store\slice_impl.rs:
+C:\Users\Daniil\.cargo\registry\src\index.crates.io-6f17d22bba15001f\litemap-0.7.4\src\store\vec_impl.rs:

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #chat {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 10px;
+        }
+
+        #message, #username, #password, #reg-username, #reg-password {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: calc(100% - 110px);
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .error, .success {
+            color: red;
+            text-align: center;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<h1>Real-Time Chat</h1>
+
+<div id="login-container">
+    <h3>Login</h3>
+    <input id="username" type="text" placeholder="Username" />
+    <input id="password" type="password" placeholder="Password" />
+    <button onclick="connect()">Login</button>
+    <p><a href="#" onclick="showRegistration()">Not registered? Sign up here.</a></p>
+</div>
+
+<div id="registration-container" class="hidden">
+    <h3>Register</h3>
+    <input id="reg-username" type="text" placeholder="Username" />
+    <input id="reg-password" type="password" placeholder="Password" />
+    <button onclick="register()">Register</button>
+    <p><a href="#" onclick="showLogin()">Already registered? Login here.</a></p>
+    <div id="registration-message"></div>
+</div>
+
+<div id="chat-container" class="hidden">
+    <div id="chat"></div>
+    <select id="recipient">
+        <option value="">Public</option>
+    </select>
+    <input id="message" type="text" placeholder="Type your message..." />
+    <button onclick="sendMessage()">Send</button>
+</div>
+
+<div id="error" class="error"></div>
+
+<script>
+    let ws;
+
+    function showRegistration() {
+        document.getElementById("login-container").classList.add("hidden");
+        document.getElementById("registration-container").classList.remove("hidden");
+    }
+
+    function showLogin() {
+        document.getElementById("registration-container").classList.add("hidden");
+        document.getElementById("login-container").classList.remove("hidden");
+    }
+
+    async function register() {
+        const username = document.getElementById("reg-username").value;
+        const password = document.getElementById("reg-password").value;
+        const messageDiv = document.getElementById("registration-message");
+
+        if (!username || !password) {
+            messageDiv.innerHTML = "<p class='error'>Username and password are required!</p>";
+            return;
+        }
+
+        const response = await fetch("/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
+        });
+
+        if (response.status === 201) {
+            messageDiv.innerHTML = "<p class='success'>Registration successful! Redirecting to login...</p>";
+            setTimeout(() => {
+                document.getElementById("reg-username").value = "";
+                document.getElementById("reg-password").value = "";
+                showLogin();
+            }, 1500);
+        } else {
+            messageDiv.innerHTML = "<p class='error'>Registration failed. Username might be taken.</p>";
+        }
+    }
+
+    function connect() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        if (!username || !password) {
+            document.getElementById("error").innerText = "Username and password are required!";
+            return;
+        }
+
+        ws = new WebSocket(`ws://127.0.0.1:3030/ws?username=${username}&password=${password}`);
+
+        ws.onopen = () => {
+            document.getElementById("login-container").classList.add("hidden");
+            document.getElementById("chat-container").classList.remove("hidden");
+            document.getElementById("error").innerText = "";
+        };
+
+        ws.onmessage = (event) => {
+            const message = event.data;
+            console.log("Received message:", message); // Логируем все входящие сообщения
+
+            // Если это сообщение о пользователях
+            if (message.startsWith("ACTIVE_USERS:")) {
+                console.log("Handling active users update...");
+                const users = JSON.parse(message.replace("ACTIVE_USERS: ", ""));
+                updateRecipientList(users);
+                return;
+            }
+
+            // Если это обычное сообщение
+            const chat = document.getElementById("chat");
+            const messageDiv = document.createElement("div");
+            messageDiv.textContent = message;
+            chat.appendChild(messageDiv);
+
+            chat.scrollTop = chat.scrollHeight;
+        };
+    }
+
+    function sendMessage() {
+        const recipient = document.getElementById("recipient").value;
+        const input = document.getElementById("message");
+        const message = recipient ? `@${recipient} ${input.value}` : input.value;
+
+        if (!ws || ws.readyState !== WebSocket.OPEN) {
+            console.error("WebSocket connection is not established or is not open!");
+            return;
+        }
+
+        ws.send(message);
+        input.value = '';
+        console.log("Message sent:", message);
+    }
+
+    function updateRecipientList(users) {
+        console.log("Updating recipient list with users:", users); // Логируем полученных пользователей
+        const recipientSelect = document.getElementById("recipient");
+        if (!recipientSelect) {
+            console.error("Recipient select element not found!");
+            return;
+        }
+
+        recipientSelect.innerHTML = '<option value="">Public</option>';
+
+        const currentUser = document.getElementById("username").value;
+        users.forEach(user => {
+            if (user !== currentUser) { // Исключаем текущего пользователя
+                const option = document.createElement("option");
+                option.value = user;
+                option.textContent = user;
+                recipientSelect.appendChild(option);
+            }
+        });
+
+        console.log("Recipient list updated:", recipientSelect.innerHTML);
+    }
+</script>
+</body>
+</html>

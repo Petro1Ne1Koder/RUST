@@ -18,7 +18,7 @@ impl TodoList {
     fn new() -> Self {
         TodoList { tasks: Vec::new() }
     }
-    
+
     fn load_from_file(filename: &str) -> io::Result<Self> {
         let file = File::open(filename)?;
         let reader = BufReader::new(file);
